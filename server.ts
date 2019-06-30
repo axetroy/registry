@@ -85,7 +85,7 @@ async function main() {
     (async req => {
       const pkg = urlParser(req.url);
 
-      if (!pkg || !reflex[pkg.domain]) {
+      if (!pkg) {
         req.respond({ status: 404 });
         return;
       }
