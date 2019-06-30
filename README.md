@@ -14,7 +14,7 @@ Currently supports most of the code hosting platforms on the market.
 ### How to setup
 
 ```bash
-deno --allow-net --allow-env https://github.com/axetroy/deno_registry/server.ts
+deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/deno_registry/master/server.ts
 ```
 
 ### How to use it
