@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+    "target": "esnext",
+    "lib": ["esnext"]
+  },
+  "include": ["./**/*.ts"]
+}
