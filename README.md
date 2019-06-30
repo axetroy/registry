@@ -19,6 +19,10 @@ deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/deno_regi
 
 ### How to use it
 
+Use the following format to import packages
+
+`https://{domain}/{owner}/{repository}@{version}/filepath.ts`
+
 ```typescript
 // import deno_std
 import { server } from "http://localhost:8000/std@v0.9.0/http/server.ts";
