@@ -86,17 +86,15 @@ async function main() {
       const pkg = urlParser(req.url);
 
       if (!pkg) {
-        req.respond({ status: 404 });
+        await req.respond({ status: 404 });
         return;
       }
 
-      const headers = new Headers();
-
       const url = urlGenerator(pkg);
 
-      headers.append("Location", url);
+      const res = await fetch(url);
 
-      await req.respond({ status: 301, headers: headers });
+      await req.respond(res);
     })(req).catch((err: Error) => {
       req.respond({ status: 500, body: new TextEncoder().encode(err.message) });
     });
