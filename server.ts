@@ -52,6 +52,10 @@ export function urlParser(url: string): Package {
       const filepath = matcher[4];
       const pkg = database[packageName] as OldPkg;
 
+      if (!pkg) {
+        return;
+      }
+
       const u = new URL(pkg.repo);
       const [, owner, repoName] = u.pathname.split("/");
       const host = u.host;
