@@ -1,4 +1,10 @@
-import { serve } from "https://deno.land/std@v0.9.0/http/server.ts";
+import { serve } from "https://deno.land/std@v0.11.0/http/server.ts";
+import database from "./database.json";
+
+interface OldPkg {
+  url: string;
+  repo: string;
+}
 
 const reflex = {
   // prettier-ignore
@@ -32,6 +38,26 @@ export function urlParser(url: string): Package {
       const version = matcher[2] || "master";
       const file = matcher[3];
       url = `/github.com/denoland/deno_std@${version}/${file}`;
+    }
+  }
+
+  // Compatible with old package manager.
+  // /x/:owner/:repo/filepath.ts
+  {
+    const xReg = /^\/x\/([^@]+)(@([^\/]+))?\/(.+)/;
+    const matcher = url.match(xReg);
+    if (matcher) {
+      const packageName = matcher[1];
+      const version = matcher[3];
+      const filepath = matcher[4];
+      const pkg = database[packageName] as OldPkg;
+
+      const u = new URL(pkg.repo);
+      const [, owner, repoName] = u.pathname.split("/");
+      const host = u.host;
+      url = `/${host}/${owner}/${repoName}${
+        version ? "@" + version : ""
+      }/${filepath}`;
     }
   }
 
