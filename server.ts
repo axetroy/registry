@@ -104,7 +104,7 @@ export function urlGenerator(pkg: Package): string {
 
 async function main() {
   const env = Deno.env();
-  const port = env.PORT || "8000";
+  const port = env.PORT || "80";
   const s = serve("0.0.0.0:" + port);
 
   for await (const req of s) {
