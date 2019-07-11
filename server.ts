@@ -20,7 +20,11 @@ const reflex = {
   // prettier-ignore
   "coding.net": "https://coding.net/u/${owner}/p/${repository}/raw/${version}/${file}",
   // prettier-ignore
-  "code.aliyun.com": "https://code.aliyun.com/${owner}/${repository}/raw/${version}/${file}"
+  "code.aliyun.com": "https://code.aliyun.com/${owner}/${repository}/raw/${version}/${file}",
+  // prettier-ignore
+  "dev.tencent.com": "https://dev.tencent.com/u/${owner}/p/${repository}/git/raw/${version}/${file}",
+  // prettier-ignore
+  "git.code.tencent.com": "https://git.code.tencent.com/${owner}/${repository}/raw/${version}/${file}"
 };
 
 export interface Package {

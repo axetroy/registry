@@ -10,6 +10,8 @@ Currently supports most of the code hosting platforms on the market.
 - [x] [Gitee](https://gitee.com)
 - [x] [Coding](https://coding.net)
 - [x] [Aliyun](https://code.aliyun.com)
+- [x] [Tencent Cloud Developer Platform](https://dev.tencent.com)
+- [x] [Tencent Worker Bee](https://git.code.tencent.com)
 
 ### How to setup
 

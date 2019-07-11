@@ -140,6 +140,24 @@ test(function testUrlGenerator() {
     [
       "/code.aliyun.com/owner/name@v1.0.0/example.ts",
       "https://code.aliyun.com/owner/name/raw/v1.0.0/example.ts"
+    ],
+    // Tencent Cloud Developer Platform
+    [
+      "/dev.tencent.com/owner/name/example.ts",
+      "https://dev.tencent.com/u/owner/p/name/git/raw/master/example.ts"
+    ],
+    [
+      "/dev.tencent.com/owner/name@v1.0.0/example.ts",
+      "https://dev.tencent.com/u/owner/p/name/git/raw/v1.0.0/example.ts"
+    ],
+    // Tencent Worker Bee
+    [
+      "/git.code.tencent.com/owner/name/example.ts",
+      "https://git.code.tencent.com/owner/name/raw/master/example.ts"
+    ],
+    [
+      "/git.code.tencent.com/owner/name@v1.0.0/example.ts",
+      "https://git.code.tencent.com/owner/name/raw/v1.0.0/example.ts"
     ]
   ];
 
