@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@v0.11.0/http/server.ts";
 import database from "./database.json";
 
+const encoder = new TextEncoder();
+
 interface OldPkg {
   url: string;
   repo: string;
@@ -116,7 +118,10 @@ async function main() {
       const pkg = urlParser(req.url);
 
       if (!pkg) {
-        await req.respond({ status: 404 });
+        await req.respond({
+          status: 404,
+          body: encoder.encode("404 not found")
+        });
         return;
       }
 
@@ -126,7 +131,7 @@ async function main() {
 
       await req.respond(res);
     })(req).catch((err: Error) => {
-      req.respond({ status: 500, body: new TextEncoder().encode(err.message) });
+      req.respond({ status: 500, body: encoder.encode(err.message) });
     });
   }
 }
