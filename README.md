@@ -25,24 +25,24 @@ deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/deno_regi
 
 Use the following format to import packages
 
-`http://localhost/{domain}/{owner}/{repository}@{version}/filepath.ts`
+`https://denolib.herokuapp.com/{domain}/{owner}/{repository}@{version}/filepath.ts`
 
 Or compatible with [denoland/registry](https://github.com/denoland/registry)
 
-`http://localhost/x/{packageName}@{version}/filepath.ts`
+`https://denolib.herokuapp.com/x/{packageName}@{version}/filepath.ts`
 
 ```typescript
 // Import modules in new ways
-import { server } from "http://localhost/std/http/server.ts";
-import github from "http://localhost/github.com/username/repository/mod.ts";
-import gitlab from "http://localhost/gitlab.com/username/repository/mod.ts";
-import bitbucket from "http://localhost/bitbucket.org/username/repository/mod.ts";
-import gitee from "http://localhost/gitee.com/username/repository/mod.ts";
-import coding from "http://localhost/coding.net/username/repository/mod.ts";
+import { server } from "https://denolib.herokuapp.com/std/http/server.ts";
+import github from "https://denolib.herokuapp.com/github.com/username/repository/mod.ts";
+import gitlab from "https://denolib.herokuapp.com/gitlab.com/username/repository/mod.ts";
+import bitbucket from "https://denolib.herokuapp.com/bitbucket.org/username/repository/mod.ts";
+import gitee from "https://denolib.herokuapp.com/gitee.com/username/repository/mod.ts";
+import coding from "https://denolib.herokuapp.com/coding.net/username/repository/mod.ts";
 
 // Import modules in old ways. compatible with `denoland/registry`
-import { server } from "http://localhost/x/abc/mod.ts";
-import * as math from "http://localhost/x/math/mod.ts";
+import { server } from "https://denolib.herokuapp.com/x/abc/mod.ts";
+import * as math from "https://denolib.herokuapp.com/x/math/mod.ts";
 ```
 
 ## License
