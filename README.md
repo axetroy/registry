@@ -15,7 +15,7 @@ Currently supports most of the code hosting platforms on the market.
 
 ### How to setup
 
-require `deno@0.11.0`
+require `deno@0.15.0`
 
 ```bash
 deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/deno_registry/master/server.ts
