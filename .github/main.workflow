@@ -1,9 +1,9 @@
-workflow "Fetch the dependencies" {
+workflow "Test" {
   on = "push"
-  resolves = ["Install Deno"]
+  resolves = ["Run test"]
 }
 
-action "Install Deno" {
+action "Run test" {
   uses = "axetroy/deno-action@0.0.1"
   args = "run test.ts"
 }
