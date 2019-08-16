@@ -47,5 +47,4 @@ import * as math from "https://denolib.herokuapp.com/x/math/mod.ts";
 
 ## License
 
-
 The [MIT License](https://github.com/axetroy/deno_registry/blob/master/LICENSE)

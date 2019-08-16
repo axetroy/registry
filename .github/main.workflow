@@ -5,5 +5,5 @@ workflow "Fetch the dependencies" {
 
 action "Install Deno" {
   uses = "axetroy/deno-action@0.0.1"
-  args = "help"
+  args = "run test.ts"
 }
