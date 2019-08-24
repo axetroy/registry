@@ -8,23 +8,49 @@ interface OldPkg {
   repo: string;
 }
 
-const reflex = {
+interface Reflex {
+  [source: string]: {
+    repository: string;
+    raw: string;
+  };
+}
+
+const reflex: Reflex = {
   // prettier-ignore
-  "github.com": "https://raw.githubusercontent.com/${owner}/${repository}/${version}/${file}",
+  "github.com": {
+    repository: "https://github.com/${owner}/${repository}",
+    raw: "https://raw.githubusercontent.com/${owner}/${repository}/${version}/${file}"
+  },
+  "gitlab.com": {
+    repository: "https://gitlab.com/${owner}/${repository}",
+    raw: "https://gitlab.com/${owner}/${repository}/raw/${version}/${file}"
+  },
+  "bitbucket.org": {
+    repository: "https://bitbucket.org/${owner}/${repository}",
+    raw: "https://bitbucket.org/${owner}/${repository}/raw/${version}/${file}"
+  },
+  "gitee.com": {
+    repository: "https://gitee.com/${owner}/${repository}",
+    raw: "https://gitee.com/${owner}/${repository}/raw/${version}/${file}"
+  },
+  "coding.net": {
+    repository: "https://coding.net/u/${owner}/p/${repository}",
+    raw: "https://coding.net/u/${owner}/p/${repository}/raw/${version}/${file}"
+  },
+  "code.aliyun.com": {
+    repository: "https://code.aliyun.com/${owner}/${repository}",
+    raw: "https://code.aliyun.com/${owner}/${repository}/raw/${version}/${file}"
+  },
   // prettier-ignore
-  "gitlab.com": "https://gitlab.com/${owner}/${repository}/raw/${version}/${file}",
+  "dev.tencent.com": {
+    repository: "https://dev.tencent.com/u/${owner}/p/${repository}",
+    raw: "https://dev.tencent.com/u/${owner}/p/${repository}/git/raw/${version}/${file}"
+  },
   // prettier-ignore
-  "bitbucket.org": "https://bitbucket.org/${owner}/${repository}/raw/${version}/${file}",
-  // prettier-ignore
-  "gitee.com": "https://gitee.com/${owner}/${repository}/raw/${version}/${file}",
-  // prettier-ignore
-  "coding.net": "https://coding.net/u/${owner}/p/${repository}/raw/${version}/${file}",
-  // prettier-ignore
-  "code.aliyun.com": "https://code.aliyun.com/${owner}/${repository}/raw/${version}/${file}",
-  // prettier-ignore
-  "dev.tencent.com": "https://dev.tencent.com/u/${owner}/p/${repository}/git/raw/${version}/${file}",
-  // prettier-ignore
-  "git.code.tencent.com": "https://git.code.tencent.com/${owner}/${repository}/raw/${version}/${file}"
+  "git.code.tencent.com": {
+    repository: "https://git.code.tencent.com/${owner}/${repository}",
+    raw: "https://git.code.tencent.com/${owner}/${repository}/raw/${version}/${file}"
+  }
 };
 
 export interface Package {
@@ -75,7 +101,7 @@ export function urlParser(url: string): Package {
 
   paths.shift();
 
-  if (paths.length <= 3) {
+  if (paths.length <= 2) {
     return;
   }
 
@@ -101,15 +127,29 @@ export function urlParser(url: string): Package {
 }
 
 export function urlGenerator(pkg: Package): string {
-  const urlTemplate = reflex[pkg.domain];
+  const info = reflex[pkg.domain];
 
-  const url = urlTemplate
+  const url = info.raw
     .replace(/\$\{\s*owner\s*\}/, pkg.owner)
     .replace(/\$\{\s*repository\s*\}/, pkg.repository)
     .replace(/\$\{\s*version\s*\}/, pkg.version)
     .replace(/\$\{\s*file\s*\}/, pkg.file);
 
   return url;
+}
+
+export function repositoryUrlGenerator(pkg: Package): string {
+  const info = reflex[pkg.domain];
+
+  const url = info.repository
+    .replace(/\$\{\s*owner\s*\}/, pkg.owner)
+    .replace(/\$\{\s*repository\s*\}/, pkg.repository);
+
+  return url;
+}
+
+export function isBrowserUserAgent(userAgent: string): boolean {
+  return /(webkit)|(Mozilla)|(chrome)|(safari)/i.test(userAgent);
 }
 
 async function main() {
@@ -119,6 +159,26 @@ async function main() {
 
   for await (const req of s) {
     (async req => {
+      const userAgent = req.headers.get("user-agent");
+
+      const u = new URL("http://localhost" + req.url);
+      const isRequestByBrowser = isBrowserUserAgent(userAgent);
+
+      if (isRequestByBrowser) {
+        switch (u.pathname) {
+          case "/":
+            const headers = new Headers();
+
+            headers.append(
+              "Location",
+              "https://github.com/axetroy/deno_registry"
+            );
+
+            await req.respond({ status: 301, headers: headers });
+            break;
+        }
+      }
+
       const pkg = urlParser(req.url);
 
       if (!pkg) {
@@ -127,6 +187,18 @@ async function main() {
           body: encoder.encode("404 not found")
         });
         return;
+      }
+
+      if (isRequestByBrowser) {
+        if (pkg.file === "") {
+          const repositoryUrl = repositoryUrlGenerator(pkg);
+          const headers = new Headers();
+
+          headers.append("Location", repositoryUrl);
+
+          await req.respond({ status: 301, headers: headers });
+          return;
+        }
       }
 
       const url = urlGenerator(pkg);
