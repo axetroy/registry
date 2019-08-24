@@ -4,6 +4,8 @@ This is a generic registry for importing library from everywhere.
 
 Currently supports most of the code hosting platforms on the market.
 
+> [Related proposal](https://github.com/denoland/registry/issues/117)
+
 - [x] [Github](https://github.com)
 - [x] [Gitlab](https://gitlab.com)
 - [x] [Bitbucket](https://bitbucket.org)
