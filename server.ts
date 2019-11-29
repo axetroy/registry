@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@v0.15.0/http/server.ts";
+import { serve } from "https://deno.land/std@v0.25.0/http/server.ts";
 import database from "./database.json";
 
 const encoder = new TextEncoder();
@@ -154,7 +154,7 @@ export function isBrowserUserAgent(userAgent: string): boolean {
 
 async function main() {
   const env = Deno.env();
-  const port = env.PORT || "80";
+  const port = env.PORT || "8088";
   const s = serve("0.0.0.0:" + port);
 
   for await (const req of s) {

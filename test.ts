@@ -1,5 +1,5 @@
-import { test, runTests } from "https://deno.land/std@v0.15.0/testing/mod.ts";
-import { assertEquals } from "https://deno.land/std@v0.15.0/testing/asserts.ts";
+import { test, runTests } from "https://deno.land/std@v0.25.0/testing/mod.ts";
+import { assertEquals } from "https://deno.land/std@v0.25.0/testing/asserts.ts";
 import { Package, urlParser, urlGenerator } from "./server.ts";
 
 test(function testUrlParser() {
