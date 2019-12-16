@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "github.com/": "https://lib.axetroy.xyz/github.com/"
+  }
+}

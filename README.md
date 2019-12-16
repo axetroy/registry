@@ -15,6 +15,25 @@ Currently supports most of the code hosting platforms on the market.
 - [x] [Tencent Cloud Developer Platform](https://dev.tencent.com)
 - [x] [Tencent Worker Bee](https://git.code.tencent.com)
 
+### Feel the Magic
+
+```json
+{
+  "imports": {
+    "github.com/": "https://lib.axetroy.xyz/github.com/"
+  }
+}
+```
+
+```ts
+// example.ts
+import { get } from "github.com/axetroy/deno_process/mod.ts";
+
+console.log("current process information: ", await get(Deno.pid));
+```
+
+Run with command line `deno run --allow-run --importmap=import_map.json example.ts`
+
 ### How to setup
 
 require `deno@0.26.0`
