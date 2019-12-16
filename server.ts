@@ -1,12 +1,6 @@
 import { serve } from "https://deno.land/std@v0.25.0/http/server.ts";
-import database from "./database.json";
 
 const encoder = new TextEncoder();
-
-interface OldPkg {
-  url: string;
-  repo: string;
-}
 
 interface Reflex {
   [source: string]: {
@@ -70,30 +64,6 @@ export function urlParser(url: string): Package {
       const version = matcher[2] || "master";
       const file = matcher[3];
       url = `/github.com/denoland/deno_std@${version}/${file}`;
-    }
-  }
-
-  // Compatible with old package manager.
-  // /x/:owner/:repo/filepath.ts
-  {
-    const xReg = /^\/x\/([^@]+)(@([^\/]+))?\/(.+)/;
-    const matcher = url.match(xReg);
-    if (matcher) {
-      const packageName = matcher[1];
-      const version = matcher[3];
-      const filepath = matcher[4];
-      const pkg = database[packageName] as OldPkg;
-
-      if (!pkg) {
-        return;
-      }
-
-      const u = new URL(pkg.repo);
-      const [, owner, repoName] = u.pathname.split("/");
-      const host = u.host;
-      url = `/${host}/${owner}/${repoName}${
-        version ? "@" + version : ""
-      }/${filepath}`;
     }
   }
 

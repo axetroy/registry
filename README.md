@@ -17,7 +17,7 @@ Currently supports most of the code hosting platforms on the market.
 
 ### How to setup
 
-require `deno@0.15.0`
+require `deno@0.26.0`
 
 ```bash
 deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/deno_registry/master/server.ts
@@ -29,24 +29,17 @@ Use the following format to import packages
 
 `https://lib.axetroy.xyz/{domain}/{owner}/{repository}@{version}/filepath.ts`
 
-Or compatible with [denoland/registry](https://github.com/denoland/registry)
-
-`https://lib.axetroy.xyz/x/{packageName}@{version}/filepath.ts`
-
 ```typescript
 // Import modules in new ways
 import { server } from "https://lib.axetroy.xyz/std/http/server.ts";
+
 import github from "https://lib.axetroy.xyz/github.com/username/repository/mod.ts";
 import gitlab from "https://lib.axetroy.xyz/gitlab.com/username/repository/mod.ts";
 import bitbucket from "https://lib.axetroy.xyz/bitbucket.org/username/repository/mod.ts";
 import gitee from "https://lib.axetroy.xyz/gitee.com/username/repository/mod.ts";
 import coding from "https://lib.axetroy.xyz/coding.net/username/repository/mod.ts";
-
-// Import modules in old ways. compatible with `denoland/registry`
-import { server } from "https://lib.axetroy.xyz/x/abc/mod.ts";
-import * as math from "https://lib.axetroy.xyz/x/math/mod.ts";
 ```
 
 ## License
 
-The [MIT License](https://github.com/axetroy/deno_registry/blob/master/LICENSE)
+The [MIT License](LICENSE)
