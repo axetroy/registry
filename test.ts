@@ -43,27 +43,6 @@ test(function testUrlParser() {
         version: "master",
         file: "http/server.ts"
       }
-    ],
-    // Compatible with old package manager.
-    [
-      "/x/abc/mod.ts",
-      {
-        domain: "github.com",
-        owner: "zhmushan",
-        repository: "abc",
-        version: "master",
-        file: "mod.ts"
-      }
-    ],
-    [
-      "/x/abc@v0.1.0/mod.ts",
-      {
-        domain: "github.com",
-        owner: "zhmushan",
-        repository: "abc",
-        version: "v0.1.0",
-        file: "mod.ts"
-      }
     ]
   ];
 
