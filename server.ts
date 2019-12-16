@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@v0.26.0/http/server.ts";
+import { StringReader } from "https://deno.land/std@v0.26.0/io/readers.ts";
 
 const encoder = new TextEncoder();
 
@@ -139,12 +140,15 @@ async function main() {
           case "/":
             const headers = new Headers();
 
-            headers.append(
-              "Location",
-              "https://github.com/axetroy/deno_registry"
-            );
+            const home = await Deno.open("./index.html", "r");
 
-            await req.respond({ status: 301, headers: headers });
+            headers.append("Content-Type", "text/html; charset=utf-8");
+
+            await req.respond({
+              status: 200,
+              headers: headers,
+              body: home
+            });
             break;
         }
       }
@@ -166,7 +170,7 @@ async function main() {
 
           headers.append("Location", repositoryUrl);
 
-          await req.respond({ status: 301, headers: headers });
+          await req.respond({ status: 302, headers: headers });
           return;
         }
       }

@@ -1,0 +1,17 @@
+on: push
+name: test
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        deno: ['v0.26.0']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    name: Deno ${{ matrix.deno }} test in ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup deno
+        uses: denolib/setup-deno@v1
+        with:
+          deno-version: ${{ matrix.deno }}
+      - run: deno test -A

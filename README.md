@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/axetroy/registry/workflows/test/badge.svg)](https://github.com/axetroy/registry/actions)
+
 ## Deno registry
 
 This is a generic registry for importing library from everywhere.
@@ -39,7 +41,7 @@ Run with command line `deno run --allow-run --importmap=import_map.json example.
 require `deno@0.26.0`
 
 ```bash
-deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/deno_registry/master/server.ts
+deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/registry/master/server.ts
 ```
 
 ### How to use it
