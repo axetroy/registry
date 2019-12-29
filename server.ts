@@ -45,6 +45,10 @@ const reflex: Reflex = {
   "git.code.tencent.com": {
     repository: "https://git.code.tencent.com/${owner}/${repository}",
     raw: "https://git.code.tencent.com/${owner}/${repository}/raw/${version}/${file}"
+  },
+  "notabug.org": {
+    repository: "https://notabug.org/${owner}/${repository}",
+    raw: "https://notabug.org/${owner}/${repository}/raw/${version}/${file}"
   }
 };
 

@@ -16,6 +16,7 @@ Currently supports most of the code hosting platforms on the market.
 - [x] [Aliyun](https://code.aliyun.com)
 - [x] [Tencent Cloud Developer Platform](https://dev.tencent.com)
 - [x] [Tencent Worker Bee](https://git.code.tencent.com)
+- [x] [Not A Bug](https://notabug.org)
 
 ### Feel the Magic
 
