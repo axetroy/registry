@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Setup deno
-        uses: denolib/setup-deno@v1
+        uses: denolib/setup-deno@master
         with:
           deno-version: ${{ matrix.deno }}
       - run: deno test -A
