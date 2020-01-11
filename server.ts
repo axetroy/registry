@@ -1,5 +1,4 @@
-import { serve } from "https://deno.land/std@v0.26.0/http/server.ts";
-import { StringReader } from "https://deno.land/std@v0.26.0/io/readers.ts";
+import { serve } from "https://deno.land/std@v0.29.0/http/server.ts";
 
 const encoder = new TextEncoder();
 
