@@ -1,11 +1,11 @@
-on: push
+on: [push, pull_request]
 name: test
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        deno: ['v0.29.0']
+        deno: ['v1.0.0-rc1']
         os: [ubuntu-latest, macOS-latest, windows-latest]
     name: Deno ${{ matrix.deno }} test in ${{ matrix.os }}
     steps:
@@ -14,6 +14,15 @@ jobs:
         uses: denolib/setup-deno@master
         with:
           deno-version: ${{ matrix.deno }}
-      - run: |
-          deno fmt --check *.md *.ts
+
+      - name: Check code format
+        if: runner.os != 'Windows'
+        env:
+          RUST_BACKTRACE: 1
+        run: |
+          deno fmt --check
+      - name: Test
+        env:
+          RUST_BACKTRACE: 1
+        run: |
           deno test -A

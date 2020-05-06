@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@v0.29.0/http/server.ts";
+import { serve } from "https://deno.land/std@v1.0.0-rc1/http/server.ts";
 
 const encoder = new TextEncoder();
 
@@ -13,42 +13,46 @@ const reflex: Reflex = {
   // prettier-ignore
   "github.com": {
     repository: "https://github.com/${owner}/${repository}",
-    raw: "https://raw.githubusercontent.com/${owner}/${repository}/${version}/${file}"
+    raw:
+      "https://raw.githubusercontent.com/${owner}/${repository}/${version}/${file}",
   },
   "gitlab.com": {
     repository: "https://gitlab.com/${owner}/${repository}",
-    raw: "https://gitlab.com/${owner}/${repository}/raw/${version}/${file}"
+    raw: "https://gitlab.com/${owner}/${repository}/raw/${version}/${file}",
   },
   "bitbucket.org": {
     repository: "https://bitbucket.org/${owner}/${repository}",
-    raw: "https://bitbucket.org/${owner}/${repository}/raw/${version}/${file}"
+    raw: "https://bitbucket.org/${owner}/${repository}/raw/${version}/${file}",
   },
   "gitee.com": {
     repository: "https://gitee.com/${owner}/${repository}",
-    raw: "https://gitee.com/${owner}/${repository}/raw/${version}/${file}"
+    raw: "https://gitee.com/${owner}/${repository}/raw/${version}/${file}",
   },
   "coding.net": {
     repository: "https://coding.net/u/${owner}/p/${repository}",
-    raw: "https://coding.net/u/${owner}/p/${repository}/raw/${version}/${file}"
+    raw: "https://coding.net/u/${owner}/p/${repository}/raw/${version}/${file}",
   },
   "code.aliyun.com": {
     repository: "https://code.aliyun.com/${owner}/${repository}",
-    raw: "https://code.aliyun.com/${owner}/${repository}/raw/${version}/${file}"
+    raw:
+      "https://code.aliyun.com/${owner}/${repository}/raw/${version}/${file}",
   },
   // prettier-ignore
   "dev.tencent.com": {
     repository: "https://dev.tencent.com/u/${owner}/p/${repository}",
-    raw: "https://dev.tencent.com/u/${owner}/p/${repository}/git/raw/${version}/${file}"
+    raw:
+      "https://dev.tencent.com/u/${owner}/p/${repository}/git/raw/${version}/${file}",
   },
   // prettier-ignore
   "git.code.tencent.com": {
     repository: "https://git.code.tencent.com/${owner}/${repository}",
-    raw: "https://git.code.tencent.com/${owner}/${repository}/raw/${version}/${file}"
+    raw:
+      "https://git.code.tencent.com/${owner}/${repository}/raw/${version}/${file}",
   },
   "notabug.org": {
     repository: "https://notabug.org/${owner}/${repository}",
-    raw: "https://notabug.org/${owner}/${repository}/raw/${version}/${file}"
-  }
+    raw: "https://notabug.org/${owner}/${repository}/raw/${version}/${file}",
+  },
 };
 
 export interface Package {
@@ -59,7 +63,7 @@ export interface Package {
   file: string;
 }
 
-export function urlParser(url: string): Package {
+export function urlParser(url: string): Package | void {
   // /std@version/filepath.ts
   {
     const stdReg = /^\/std(@([^\/]+))?\/(.+)/;
@@ -96,7 +100,7 @@ export function urlParser(url: string): Package {
     owner,
     repository,
     version,
-    file: filepaths.join("/")
+    file: filepaths.join("/"),
   };
 }
 
@@ -127,13 +131,12 @@ export function isBrowserUserAgent(userAgent: string): boolean {
 }
 
 async function main() {
-  const env = Deno.env();
-  const port = env.PORT || "8088";
+  const port = Deno.env.get("PORT") || "8088";
   const s = serve("0.0.0.0:" + port);
 
   for await (const req of s) {
-    (async req => {
-      const userAgent = req.headers.get("user-agent");
+    (async (req) => {
+      const userAgent = req.headers.get("user-agent") || "";
 
       const u = new URL("http://localhost" + req.url);
       const isRequestByBrowser = isBrowserUserAgent(userAgent);
@@ -143,14 +146,14 @@ async function main() {
           case "/":
             const headers = new Headers();
 
-            const home = await Deno.open("./index.html", "r");
+            const home = await Deno.open("./index.html", { read: true });
 
             headers.append("Content-Type", "text/html; charset=utf-8");
 
             await req.respond({
               status: 200,
               headers: headers,
-              body: home
+              body: home,
             });
             break;
         }
@@ -161,7 +164,7 @@ async function main() {
       if (!pkg) {
         await req.respond({
           status: 404,
-          body: encoder.encode("404 not found")
+          body: encoder.encode("404 not found"),
         });
         return;
       }
@@ -182,7 +185,19 @@ async function main() {
 
       const res = await fetch(url);
 
-      await req.respond(res);
+      const headers = res.headers;
+
+      headers.append(
+        "X-Power-By",
+        "https://github.com/axetroy/registry",
+      );
+
+      await req.respond({
+        status: res.status,
+        headers: headers,
+        body: await res.text(),
+        trailers: () => res.trailer,
+      });
     })(req).catch((err: Error) => {
       req.respond({ status: 500, body: encoder.encode(err.message) });
     });
