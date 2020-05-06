@@ -130,80 +130,74 @@ export function isBrowserUserAgent(userAgent: string): boolean {
   return /(webkit)|(Mozilla)|(chrome)|(safari)/i.test(userAgent);
 }
 
-async function main() {
-  const port = Deno.env.get("PORT") || "8088";
-  const s = serve("0.0.0.0:" + port);
+const port = Deno.env.get("PORT") || "8088";
+const s = serve("0.0.0.0:" + port);
 
-  for await (const req of s) {
-    (async (req) => {
-      const userAgent = req.headers.get("user-agent") || "";
+for await (const req of s) {
+  (async (req) => {
+    const userAgent = req.headers.get("user-agent") || "";
 
-      const u = new URL("http://localhost" + req.url);
-      const isRequestByBrowser = isBrowserUserAgent(userAgent);
+    const u = new URL("http://localhost" + req.url);
+    const isRequestByBrowser = isBrowserUserAgent(userAgent);
 
-      if (isRequestByBrowser) {
-        switch (u.pathname) {
-          case "/":
-            const headers = new Headers();
-
-            const home = await Deno.open("./index.html", { read: true });
-
-            headers.append("Content-Type", "text/html; charset=utf-8");
-
-            await req.respond({
-              status: 200,
-              headers: headers,
-              body: home,
-            });
-            break;
-        }
-      }
-
-      const pkg = urlParser(req.url);
-
-      if (!pkg) {
-        await req.respond({
-          status: 404,
-          body: encoder.encode("404 not found"),
-        });
-        return;
-      }
-
-      if (isRequestByBrowser) {
-        if (pkg.file === "") {
-          const repositoryUrl = repositoryUrlGenerator(pkg);
+    if (isRequestByBrowser) {
+      switch (u.pathname) {
+        case "/":
           const headers = new Headers();
 
-          headers.append("Location", repositoryUrl);
+          const home = await Deno.open("./index.html", { read: true });
 
-          await req.respond({ status: 302, headers: headers });
-          return;
-        }
+          headers.append("Content-Type", "text/html; charset=utf-8");
+
+          await req.respond({
+            status: 200,
+            headers: headers,
+            body: home,
+          });
+          break;
       }
+    }
 
-      const url = urlGenerator(pkg);
+    const pkg = urlParser(req.url);
 
-      const res = await fetch(url);
-
-      const headers = res.headers;
-
-      headers.append(
-        "X-Power-By",
-        "https://github.com/axetroy/registry",
-      );
-
+    if (!pkg) {
       await req.respond({
-        status: res.status,
-        headers: headers,
-        body: await res.text(),
-        trailers: () => res.trailer,
+        status: 404,
+        body: encoder.encode("404 not found"),
       });
-    })(req).catch((err: Error) => {
-      req.respond({ status: 500, body: encoder.encode(err.message) });
-    });
-  }
-}
+      return;
+    }
 
-if (import.meta.main) {
-  main();
+    if (isRequestByBrowser) {
+      if (pkg.file === "") {
+        const repositoryUrl = repositoryUrlGenerator(pkg);
+        const headers = new Headers();
+
+        headers.append("Location", repositoryUrl);
+
+        await req.respond({ status: 302, headers: headers });
+        return;
+      }
+    }
+
+    const url = urlGenerator(pkg);
+
+    const res = await fetch(url);
+
+    const headers = res.headers;
+
+    headers.append(
+      "X-Power-By",
+      "https://github.com/axetroy/registry",
+    );
+
+    await req.respond({
+      status: res.status,
+      headers: headers,
+      body: await res.text(),
+      trailers: () => res.trailer,
+    });
+  })(req).catch((err: Error) => {
+    req.respond({ status: 500, body: encoder.encode(err.message) });
+  });
 }
