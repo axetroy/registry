@@ -39,7 +39,7 @@ Run with command line `deno run --allow-run --importmap=import_map.json example.
 
 ### How to setup
 
-require `Deno v1.0.0-rc1`
+require `Deno v1.3.0`
 
 ```bash
 deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/registry/master/server.ts
