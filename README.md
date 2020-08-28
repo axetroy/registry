@@ -23,7 +23,7 @@ Currently supports most of the code hosting platforms on the market.
 ```json
 {
   "imports": {
-    "github.com/": "https://lib.axetroy.xyz/github.com/"
+    "github.com/": "https://repopod.now.sh/github.com/"
   }
 }
 ```
@@ -49,17 +49,17 @@ deno --allow-net --allow-env https://raw.githubusercontent.com/axetroy/registry/
 
 Use the following format to import packages
 
-`https://lib.axetroy.xyz/{domain}/{owner}/{repository}@{version}/filepath.ts`
+`https://repopod.now.sh/{domain}/{owner}/{repository}@{version}/filepath.ts`
 
 ```typescript
 // Import modules in new ways
-import { server } from "https://lib.axetroy.xyz/std/http/server.ts";
+import { server } from "https://repopod.now.sh/std/http/server.ts";
 
-import github from "https://lib.axetroy.xyz/github.com/username/repository/mod.ts";
-import gitlab from "https://lib.axetroy.xyz/gitlab.com/username/repository/mod.ts";
-import bitbucket from "https://lib.axetroy.xyz/bitbucket.org/username/repository/mod.ts";
-import gitee from "https://lib.axetroy.xyz/gitee.com/username/repository/mod.ts";
-import coding from "https://lib.axetroy.xyz/coding.net/username/repository/mod.ts";
+import github from "https://repopod.now.sh/github.com/username/repository/mod.ts";
+import gitlab from "https://repopod.now.sh/gitlab.com/username/repository/mod.ts";
+import bitbucket from "https://repopod.now.sh/bitbucket.org/username/repository/mod.ts";
+import gitee from "https://repopod.now.sh/gitee.com/username/repository/mod.ts";
+import coding from "https://repopod.now.sh/coding.net/username/repository/mod.ts";
 ```
 
 ## License
