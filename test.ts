@@ -2,7 +2,7 @@ import {
   assert,
   assertEquals,
 } from "https://deno.land/std@v0.66.0/testing/asserts.ts";
-import { Package, urlParser, urlGenerator } from "./server.ts";
+import { Package, urlParser, urlGenerator } from "./api/index.ts";
 
 const { test } = Deno;
 

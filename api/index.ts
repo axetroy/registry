@@ -1,5 +1,6 @@
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
 import { fromStreamReader } from "https://deno.land/std@v0.66.0/io/streams.ts";
+import path from "https://deno.land/std@v0.66.0/path/mod.ts";
 
 const encoder = new TextEncoder();
 
@@ -143,7 +144,10 @@ export default async function handler(req: ServerRequest) {
         case "/":
           const headers = new Headers();
 
-          const home = await Deno.open("./index.html", { read: true });
+          const home = await Deno.open(
+            path.join(import.meta.url, "..", "index.html"),
+            { read: true },
+          );
 
           headers.append("Content-Type", "text/html; charset=utf-8");
 
