@@ -1,5 +1,4 @@
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
-import * as path from "https://deno.land/std@v0.66.0/path/mod.ts";
 
 const encoder = new TextEncoder();
 
