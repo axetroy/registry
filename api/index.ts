@@ -1,4 +1,5 @@
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
+import { fromStreamReader } from "https://deno.land/std@v0.66.0/io/streams.ts";
 
 const encoder = new TextEncoder();
 
@@ -188,11 +189,12 @@ export default async function handler(req: ServerRequest) {
       "https://github.com/axetroy/registry",
     );
 
+    const body = res.body ? fromStreamReader(res.body.getReader()) : undefined;
+
     await req.respond({
       status: res.status,
       headers: headers,
-      body: await res.text(),
-      trailers: () => res.trailer,
+      body: body,
     });
   })(req).catch((err: Error) => {
     req.respond({ status: 500, body: encoder.encode(err.message) });
