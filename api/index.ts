@@ -1,6 +1,5 @@
 import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
-import { fromStreamReader } from "https://deno.land/std@v0.66.0/io/streams.ts";
-import path from "https://deno.land/std@v0.66.0/path/mod.ts";
+import * as path from "https://deno.land/std@v0.66.0/path/mod.ts";
 
 const encoder = new TextEncoder();
 
@@ -193,12 +192,10 @@ export default async function handler(req: ServerRequest) {
       "https://github.com/axetroy/registry",
     );
 
-    const body = res.body ? fromStreamReader(res.body.getReader()) : undefined;
-
     await req.respond({
       status: res.status,
       headers: headers,
-      body: body,
+      body: await res.text(),
     });
   })(req).catch((err: Error) => {
     req.respond({ status: 500, body: encoder.encode(err.message) });
