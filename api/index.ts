@@ -144,7 +144,7 @@ export default async function handler(req: ServerRequest) {
           const headers = new Headers();
 
           const home = await Deno.open(
-            path.join(import.meta.url, "..", "index.html"),
+            "../index.html",
             { read: true },
           );
 
