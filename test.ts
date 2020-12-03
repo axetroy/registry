@@ -1,8 +1,8 @@
 import {
   assert,
-  assertEquals,
-} from "https://deno.land/std@v0.66.0/testing/asserts.ts";
-import { Package, urlParser, urlGenerator } from "./api/index.ts";
+  assertEquals
+} from "https://deno.land/std@v0.79.0/testing/asserts.ts";
+import { Package, urlGenerator, urlParser } from "./api/index.ts";
 
 const { test } = Deno;
 

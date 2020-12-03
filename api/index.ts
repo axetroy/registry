@@ -1,4 +1,5 @@
-import { ServerRequest } from "https://deno.land/std@0.66.0/http/server.ts";
+import { ServerRequest } from "https://deno.land/std@0.79.0/http/server.ts";
+import extNameToMineType from "../mine.ts";
 
 const encoder = new TextEncoder();
 
@@ -185,6 +186,19 @@ export default async function handler(req: ServerRequest) {
     const res = await fetch(url);
 
     const headers = res.headers;
+
+    const matcher = /\.\w+$/.exec(url);
+
+    if (matcher && matcher.length) {
+      const extName = matcher[0];
+
+      if (extName in extNameToMineType) {
+        headers.set(
+          "Content-Type",
+          extNameToMineType[extName],
+        );
+      }
+    }
 
     headers.append(
       "X-Power-By",
